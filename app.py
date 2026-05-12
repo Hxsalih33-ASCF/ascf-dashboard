@@ -65,10 +65,10 @@ st.sidebar.caption("Documentation: Appendix M")
 # ==========================================
 # MATHEMATICAL ENGINE (DETERMINISTIC)
 # ==========================================
-k, h0, alpha, beta, gamma, lam = 10.0, 0.55, 0.70, 1.20, 0.80, 0.50
+k, h0, alpha, beta, gamma, delta, lam = 10.0, 0.55, 0.70, 1.20, 0.80, 0.90, 0.50
 
 f_HOL = 1.0 / (1.0 + np.exp(-k * (HOL - h0)))
-Total_Sc = f_HOL * (L**alpha) * (Eth**beta) * (Gov**gamma) * (Reg**0.90)
+Total_Sc = f_HOL * (L**alpha) * (Eth**beta) * (Gov**gamma) * (Reg**delta)
 
 # ==========================================
 # MAIN TABS (DISSERTATION ALIGNED)
@@ -76,12 +76,12 @@ Total_Sc = f_HOL * (L**alpha) * (Eth**beta) * (Gov**gamma) * (Reg**0.90)
 tabs = st.tabs([
     "1. ASCF Overview", 
     "2. Capacity Calculator", 
-    "3. Deficit Matrix", 
+    "3. Governance Deficit Matrix", 
     "4. Stochastic Stress Test", 
     "5. Instrument Alignment", 
     "6. Validation Notes", 
     "7. Visualizations",
-    "8. Screenshot Mode (Appx M)"
+    "8. Appendix M Screenshot Mode"
 ])
 
 # ------------------------------------------
@@ -178,7 +178,7 @@ with tabs[3]:
 
             sim_hol, sim_l, sim_eth, sim_gov, sim_reg = gen_beta(HOL), gen_beta(L), gen_beta(Eth), gen_beta(Gov), gen_beta(Reg)
             sim_fhol = 1.0 / (1.0 + np.exp(-k * (sim_hol - h0)))
-            sim_sc = sim_fhol * (sim_l**alpha) * (sim_eth**beta) * (sim_gov**gamma) * (sim_reg**0.90)
+            sim_sc = sim_fhol * (sim_l**alpha) * (sim_eth**beta) * (sim_gov**gamma) * (sim_reg**delta)
 
             failure_rate = (sim_sc < req_sc).mean() * 100
             p5, p95 = np.percentile(sim_sc, 5), np.percentile(sim_sc, 95)
@@ -218,7 +218,7 @@ with tabs[5]:
     st.subheader("Phase I Computational Validation Boundaries")
     st.markdown("""
     * **Simulation Assumptions:** Assumes multiplicative interaction of domains based on a Cobb-Douglas production foundation.
-    * **Synthetic-Data Boundary:** N=10,000 iteration profiles are stochastically generated based on canonical elasticity priors derived from literature; they do not represent surveyed individuals.
+    * **Synthetic-Data Boundary:** Simulation profiles are stochastically generated from parameterized distributions and do not represent surveyed individuals. The dashboard implementation uses 1,000 Monte Carlo iterations for Appendix M demonstration and reproducible stress-test visualization.
     * **Non-Human-Subjects Status:** This dashboard and its underlying spreadsheet engine rely exclusively on deterministic algorithms and synthetic Monte Carlo generation. No human subjects data is utilized in Phase I.
     * **Reproducibility:** Seed fixed at `20260307` to ensure all distribution tails and failure rates remain perfectly reproducible across audits.
     * **Phase II Validation Boundary:** Empirical human-subjects validation using the mapped instruments (DECIDE, MAD-R) is reserved for Phase II research.
@@ -259,7 +259,8 @@ with tabs[6]:
 # ------------------------------------------
 with tabs[7]:
     st.subheader("Appendix M: Figure Generation Mode")
-    st.info("This view aggregates the core computational metrics into a vertically stacked, clean format optimized for dissertation screenshot capture.")
+    st.info("Recommended use: capture this page as Figure M.1 or as the master summary view for Appendix M.")
+    st.markdown("This view aggregates the core computational metrics into a vertically stacked, clean format optimized for dissertation screenshot capture.")
     
     st.markdown("### Institutional Baseline Profile")
     st.write(f"**HOL:** {HOL} | **Lit:** {L} | **Eth:** {Eth} | **Gov:** {Gov} | **Reg:** {Reg}")
